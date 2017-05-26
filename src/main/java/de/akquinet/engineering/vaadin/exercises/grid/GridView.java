@@ -58,7 +58,7 @@ public class GridView implements View, ComponentView
         // 4) set a comparator to make to column comparable, you can use the Gender's compare function
 
         // TODO: show the player's points (align right)
-        // Tip: you can use the NumberRenderer (new NumberRenderer(new DecimalFormat())) to get the points formatted
+        // Tip: you can use the NumberRenderer (new NumberRenderer(NumberFormat.getNumberInstance(UI.getCurrent().getLocale()))) to get the points formatted
 
         // TODO: show the player's medals (align right)
 

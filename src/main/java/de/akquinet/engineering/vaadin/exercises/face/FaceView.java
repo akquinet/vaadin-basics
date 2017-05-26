@@ -51,7 +51,6 @@ public class FaceView implements ComponentView, View
         // TODO: arrange the components so that they form a face
         // Tip: use setWidth(), setExpandRatio() and setComponentAlignment()
 
-        faceLayout.setSizeFull();
         faceLayout.setWidth("350px");
         faceLayout.setHeight("400px");
 

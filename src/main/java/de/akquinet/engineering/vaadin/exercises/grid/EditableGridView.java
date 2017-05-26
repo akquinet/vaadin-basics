@@ -2,13 +2,18 @@ package de.akquinet.engineering.vaadin.exercises.grid;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.renderers.HtmlRenderer;
 import de.akquinet.engineering.vaadin.ComponentView;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Axel Meier, akquinet engineering GmbH
@@ -38,9 +43,10 @@ public class EditableGridView implements View, ComponentView
 
         // TODO: make the name column editable
         // Tips:
-        // 1) create a text field for the name column and bind it with bind("name")
-        // 2) make the text field required with asRequired(..)
-        // 3) connect the name column with the text field using setEditorComponent
+        // 1) create a text field for the name column
+        // 2) use the binder to bind the text field with bind("name") to the 'name' property of the player
+        // 3) make the text field required with asRequired(..)
+        // 4) set the binding to the name column with setEditorBinding(..)
 
         // TODO: make the date column editable
         // Tip: set the date format of the date field to "yyyy-MM-dd"
@@ -58,9 +64,24 @@ public class EditableGridView implements View, ComponentView
         // TODO: make the grid editable
         // Tip: use setEnabled(..) on the grid's editor
 
-        grid.setSizeFull();
+        grid.setHeightByRows(10d);
         rootLayout.setSizeFull();
         rootLayout.addComponent(grid);
+
+        // show the saved bean
+        grid.getEditor().addSaveListener(event -> Notification.show(event.getBean().toString()));
+
+        // show the underlying data
+        final Label showValuesLabel = new Label();
+        showValuesLabel.setContentMode(ContentMode.HTML);
+        final Button showPlayersButton = new Button("show players",
+                e -> showValuesLabel.setValue(playerList
+                        .stream()
+                        .map(p -> p.toString())
+                        .collect(Collectors.joining("<br/>"))));
+        rootLayout.addComponents(showPlayersButton, showValuesLabel);
+        rootLayout.setExpandRatio(showValuesLabel, 1f);
+
     }
 
     private static String getGenderColumnHtmlContent(final Player player)
