@@ -49,6 +49,9 @@ public class ResourcesView implements View, ComponentView
 
         // Bonus: add a started, a progress and a finished listener to show and hide the progress bar,
         //          also update its value with the current progress
+        // Tip: You need polling (or the push mode) to transfer the current value of the progress bar to the client.
+        //      Enable polling in enter() and disable it in the detach listener of the rootLayout.
+        //      The method you use for enabling and disabling polling is UI.getCurrent().setPollInterval(..).
 
         rootLayout.addComponents(title, image);
 
@@ -97,7 +100,7 @@ public class ResourcesView implements View, ComponentView
     @Override
     public void enter(final ViewChangeListener.ViewChangeEvent event)
     {
-
+        // Bonus: start polling by setting the polling interval on the UI
     }
 
     @Override
