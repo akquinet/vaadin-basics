@@ -1,12 +1,10 @@
 package de.akquinet.engineering.vaadin.exercises.grid;
 
-import com.vaadin.data.HasValue;
 import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.SerializableComparator;
-import com.vaadin.server.SerializablePredicate;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.StyleGenerator;
@@ -96,13 +94,11 @@ public class GridView implements View, ComponentView
             final TextField nameFilterTextField = new TextField();
             nameFilterTextField.setPlaceholder("Filter");
             filterRow.getCell(nameColumn).setComponent(nameFilterTextField);
-            nameFilterTextField.addValueChangeListener((HasValue.ValueChangeListener<String>) event ->
-                    dataProvider.setFilter(Player::getName,
-                            (SerializablePredicate<String>) s -> s
-                                    .toLowerCase(UI.getCurrent().getLocale())
-                                    .contains(event.getValue()
-                                            .toLowerCase(UI.getCurrent().getLocale())))
-            );
+            nameFilterTextField.addValueChangeListener(event -> dataProvider
+                    .setFilter(Player::getName,
+                               s -> s.toLowerCase(UI.getCurrent().getLocale())
+                                       .contains(event.getValue()
+                                               .toLowerCase(UI.getCurrent().getLocale()))));
         }
 
         // layout grid

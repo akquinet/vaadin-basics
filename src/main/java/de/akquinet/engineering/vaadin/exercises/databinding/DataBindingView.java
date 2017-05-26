@@ -2,11 +2,9 @@ package de.akquinet.engineering.vaadin.exercises.databinding;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
-import com.vaadin.data.ValueProvider;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.Setter;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
@@ -24,7 +22,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 /**
  * @author Axel Meier, akquinet engineering GmbH
@@ -51,7 +48,7 @@ public class DataBindingView implements View, ComponentView
 
         final Movie movie = Movie.create("Trumbo", 124, new HashSet<>(Arrays
                 .asList(Locale.GERMANY, Locale.US)),
-                new Genre("fiction", "drama"));
+                                         new Genre("fiction", "drama"));
 
         // create the fields
         final TextField titleField = new TextField("Title");
@@ -75,8 +72,7 @@ public class DataBindingView implements View, ComponentView
                 .withValidator(duration -> duration > 0, "The duration must be greater zero")
                 .bind(Movie::getDurationInMinutes, Movie::setDurationInMinutes);
         binder.bind(genreSelect, Movie::getGenre, Movie::setGenre);
-        binder.bind(localeSelect, (ValueProvider<Movie, Set<Locale>>) Movie::getLocales,
-                    (Setter<Movie, Set<Locale>>) Movie::setLocales);
+        binder.bind(localeSelect, Movie::getLocales, Movie::setLocales);
 
         binder.readBean(movie);
 
@@ -90,7 +86,7 @@ public class DataBindingView implements View, ComponentView
             }
             catch (final ValidationException e)
             {
-                e.printStackTrace();
+                Notification.show("invalid data", Notification.Type.ERROR_MESSAGE);
             }
         });
         saveButton.setStyleName(ValoTheme.BUTTON_PRIMARY);

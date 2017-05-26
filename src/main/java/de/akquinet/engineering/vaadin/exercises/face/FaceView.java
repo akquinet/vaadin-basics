@@ -58,7 +58,7 @@ public class FaceView implements ComponentView, View
         faceLayout.setComponentAlignment(noseButton, Alignment.MIDDLE_CENTER);
         faceLayout.setExpandRatio(noseButton, 1.0f);
         faceLayout.setComponentAlignment(mouthField, Alignment.MIDDLE_CENTER);
-        faceLayout.setSizeFull();
+
         faceLayout.setWidth("350px");
         faceLayout.setHeight("400px");
 

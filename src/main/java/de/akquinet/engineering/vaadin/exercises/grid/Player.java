@@ -83,4 +83,16 @@ public class Player
     {
         this.medals = medals;
     }
+
+    @Override
+    public String toString()
+    {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", gender=" + gender +
+                ", points=" + points +
+                ", medals=" + medals +
+                '}';
+    }
 }
