@@ -9,6 +9,7 @@ import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.ProgressBar;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -48,49 +49,11 @@ public class ResourcesView implements View, ComponentView
         upload.setCaption("Upload image file");
         upload.setButtonCaption("upload");
 
-        upload.setReceiver(
-                (filename, mimeType) ->
-                {
-                    try
-                    {
-                        final MimeType mime = new MimeType(mimeType);
-                        if (!mime.getPrimaryType().equalsIgnoreCase("image"))
-                        {
-                            upload.interruptUpload();
-                        }
-                    }
-                    catch (final MimeTypeParseException e)
-                    {
-                        e.printStackTrace();
-                        upload.interruptUpload();
-                    }
+        upload.setReceiver(getUploadReceiver(upload));
 
-                    final String tmpDir = System.getProperty("java.io.tmpdir");
-                    final File uploadsDir = Paths.get(tmpDir, "uploads").toFile();
-                    if (!uploadsDir.exists())
-                    {
-                        uploadsDir.mkdir();
-                    }
+        upload.addSucceededListener(event -> image.setSource(new FileResource(file)));
 
-                    file = new File(uploadsDir, filename);
-                    try
-                    {
-                        return new FileOutputStream(file);
-                    }
-                    catch (final FileNotFoundException e)
-                    {
-                        e.printStackTrace();
-                        upload.interruptUpload();
-                    }
-                    return null;
-                });
-
-        upload.addSucceededListener(event ->
-                image.setSource(new FileResource(file))
-        );
-
-        upload.addFailedListener(event ->
-                Notification.show("Upload failed!", Notification.Type.ERROR_MESSAGE));
+        upload.addFailedListener(event -> Notification.show("Upload failed!", Notification.Type.ERROR_MESSAGE));
 
         upload.addStartedListener(event ->
         {
@@ -111,16 +74,56 @@ public class ResourcesView implements View, ComponentView
             }
         });
 
-        upload.addFinishedListener(event ->
-                progressBar.setVisible(false));
+        upload.addFinishedListener(event -> progressBar.setVisible(false));
 
         rootLayout.addComponents(title, upload, image, progressBar);
+
+        rootLayout.addDetachListener(e -> UI.getCurrent().setPollInterval(-1));
+    }
+
+    private Upload.Receiver getUploadReceiver(final Upload upload)
+    {
+        return (filename, mimeType) ->
+        {
+            try
+            {
+                final MimeType mime = new MimeType(mimeType);
+                if (!mime.getPrimaryType().equalsIgnoreCase("image"))
+                {
+                    upload.interruptUpload();
+                }
+            }
+            catch (final MimeTypeParseException e)
+            {
+                e.printStackTrace();
+                upload.interruptUpload();
+            }
+
+            final String tmpDir = System.getProperty("java.io.tmpdir");
+            final File uploadsDir = Paths.get(tmpDir, "uploads").toFile();
+            if (!uploadsDir.exists())
+            {
+                uploadsDir.mkdir();
+            }
+
+            file = new File(uploadsDir, filename);
+            try
+            {
+                return new FileOutputStream(file);
+            }
+            catch (final FileNotFoundException e)
+            {
+                e.printStackTrace();
+                upload.interruptUpload();
+            }
+            return null;
+        };
     }
 
     @Override
     public void enter(final ViewChangeListener.ViewChangeEvent event)
     {
-
+        UI.getCurrent().setPollInterval(500);
     }
 
     @Override

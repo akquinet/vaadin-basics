@@ -72,7 +72,7 @@ public class EditableGridView implements View, ComponentView
                         .getPresentation(gender).getName());
         genderComboBox.setEmptySelectionAllowed(false);
         final Binder.Binding<Player, Gender> genderBinding = binder
-                .bind(genderComboBox, "gender");
+                .bind(genderComboBox, Player::getGender, Player::setGender);
         genderColumn.setEditorBinding(genderBinding);
 
         grid.getEditor().setEnabled(true);
