@@ -81,8 +81,10 @@ public class EditableGridView implements View, ComponentView
         rootLayout.setSizeFull();
         rootLayout.addComponent(grid);
 
+        // show the saved bean
         grid.getEditor().addSaveListener(event -> Notification.show(event.getBean().toString()));
 
+        // show the underlying data
         final Label showValuesLabel = new Label();
         showValuesLabel.setContentMode(ContentMode.HTML);
         final Button showPlayersButton = new Button("show players",
