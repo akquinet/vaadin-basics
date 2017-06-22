@@ -80,7 +80,7 @@
         <!--<dependency>-->
             <!--<groupId>org.vaadin.addons</groupId>-->
             <!--<artifactId>ratingstars</artifactId>-->
-            <!--<version>3.0-beta3</version>-->
+            <!--<version>3.0.0</version>-->
         <!--</dependency>-->
     </dependencies>
 
